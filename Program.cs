@@ -27,6 +27,7 @@ builder.Services.AddSignalR();
 
  builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!));
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 
 // builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -79,7 +80,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
