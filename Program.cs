@@ -6,49 +6,36 @@ using finalproject.Data;
 using finalproject.Models;
 using finalproject.Services;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-
 using Microsoft.AspNetCore.Identity;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add MVC and SignalR
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 
-<<<<<<< HEAD
+
 var conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 if (!string.IsNullOrEmpty(conn))
 {
-    // Production: Postgres with pending‐changes warning suppressed
+   
     builder.Services.AddDbContext<ApplicationDbContext>(opts =>
         opts.UseNpgsql(conn)
-            .ConfigureWarnings(w => 
+            .ConfigureWarnings(w =>
                 w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 }
 else
 {
-    // Development: SQL Server fallback
-=======
-// Configure DbContext for Postgres (Render) or SQL Server (local)
-var pgConn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-if (!string.IsNullOrEmpty(pgConn))
-{
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseNpgsql(pgConn));
-}
-else
-{
->>>>>>> 80ba41b2aca2a5ec93ad462f42c0fe408c9143e8
+    
     var sqlConn = builder.Configuration.GetConnectionString("DefaultConnection")
                   ?? throw new InvalidOperationException("Missing DefaultConnection");
     builder.Services.AddDbContext<ApplicationDbContext>(opts =>
         opts.UseSqlServer(sqlConn)
-            .ConfigureWarnings(w => 
+            .ConfigureWarnings(w =>
                 w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 }
 
-// Configure Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 4;
@@ -60,7 +47,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// Configure application cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -68,49 +54,35 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 });
 
-// Other services
 builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
-<<<<<<< HEAD
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate();
 }
 
-=======
-// Bind to port
->>>>>>> 80ba41b2aca2a5ec93ad462f42c0fe408c9143e8
+
+using (var scope = app.Services.CreateScope())
+{
+    await SeedData.InitializeAsync(scope.ServiceProvider);
+}
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 app.Urls.Clear();
 app.Urls.Add($"http://0.0.0.0:{port}");
 
-// 1) Apply any pending migrations
-using (var migrateScope = app.Services.CreateScope())
-{
-    var db = migrateScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
-}
-
-// 2) Now seed data
-using (var seedScope = app.Services.CreateScope())
-{
-    await SeedData.InitializeAsync(seedScope.ServiceProvider);
-}
-
-// Configure middleware
+// Middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
