@@ -14,6 +14,12 @@ export PATH="$PATH:$(pwd)/dotnet"
 echo "Installed .NET version:"
 ./dotnet/dotnet --version
 
+echo "Restoring dependencies..."
+./dotnet/dotnet restore
+
+echo "Applying database migrations..."
+./dotnet/dotnet ef database update
+
 echo "Publishing the project..."
 ./dotnet/dotnet publish -c Release -o out
 
