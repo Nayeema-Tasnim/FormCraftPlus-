@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: finalproject
-    env: node
-    buildCommand: "dotnet publish -c Release -o out"
-    startCommand: "dotnet out/finalproject.dll"
-    plan: free
