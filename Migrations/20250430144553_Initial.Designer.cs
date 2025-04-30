@@ -12,8 +12,8 @@ using finalproject.Data;
 namespace finalproject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250430054322_Update")]
-    partial class Update
+    [Migration("20250430144553_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
