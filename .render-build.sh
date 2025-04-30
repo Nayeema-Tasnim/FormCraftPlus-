@@ -1,30 +1,25 @@
 #!/bin/bash
 
-set -e  # Stop script execution on any error
+set -e
 
 echo "Installing .NET 9.0.100 SDK..."
 curl -sSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh
 chmod +x dotnet-install.sh
 ./dotnet-install.sh --version 9.0.100 --install-dir ./dotnet
 
+export PATH="$(pwd)/dotnet:$PATH"
 
-export PATH="$PATH:$(pwd)/dotnet"
-
-
-echo "Installing dotnet-ef tool..."
-./dotnet/dotnet tool install --global dotnet-ef --version 9.0.0-preview.3.24172.9
+echo "Installing dotnet-ef (v8.0.4)..."
+./dotnet/dotnet tool install --global dotnet-ef --version 8.0.4
 export PATH="$PATH:$HOME/.dotnet/tools"
 
-echo "Installed .NET version:"
-./dotnet/dotnet --version
-
-echo "Restoring dependencies..."
+echo "Restoring..."
 ./dotnet/dotnet restore
 
-echo "Applying database migrations..."
+echo "Updating database..."
 dotnet-ef database update
 
-echo "Publishing the project..."
+echo "Publishing..."
 ./dotnet/dotnet publish -c Release -o out
 
-echo "Build complete!"
+echo "✅ Build complete!"
