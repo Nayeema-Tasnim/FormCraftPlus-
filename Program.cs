@@ -31,7 +31,8 @@ builder.Services.AddSignalR();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.WebHost.UseUrls("http://0.0.0.0:5000");
+builder.WebHost.UseUrls(Environment.GetEnvironmentVariable("PORT") ?? "http://0.0.0.0:5000");
+
 
 
 // builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
