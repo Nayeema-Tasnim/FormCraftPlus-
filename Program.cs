@@ -25,14 +25,27 @@ builder.Services.AddSignalR();
 
  
 
- var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                      ?? Environment.GetEnvironmentVariable("CONNECTION_STRING");
+var pgConn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+if (!string.IsNullOrEmpty(pgConn))
+{
+    // Production on Render: Npgsql/Postgres
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(pgConn));
+}
+else
+{
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    var sqlConn = builder.Configuration.GetConnectionString("DefaultConnection")
+                  ?? throw new InvalidOperationException("DefaultConnection missing");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(sqlConn));
+}
 
-builder.WebHost.UseUrls(Environment.GetEnvironmentVariable("PORT") ?? "http://0.0.0.0:5000");
 
+
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Urls.Clear();
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 
 // builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
