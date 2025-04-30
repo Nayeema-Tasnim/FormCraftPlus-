@@ -546,3 +546,5 @@ E:\html\itransition\finalproject\obj\Debug\net9.0\refint\finalproject.dll
 E:\html\itransition\finalproject\obj\Debug\net9.0\finalproject.pdb
 E:\html\itransition\finalproject\obj\Debug\net9.0\finalproject.genruntimeconfig.cache
 E:\html\itransition\finalproject\obj\Debug\net9.0\ref\finalproject.dll
+E:\html\itransition\finalproject\bin\Debug\net9.0\Npgsql.dll
+E:\html\itransition\finalproject\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
