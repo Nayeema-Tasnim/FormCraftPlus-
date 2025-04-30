@@ -8,10 +8,22 @@ chmod +x dotnet-install.sh
 
 export PATH="$(pwd)/dotnet:$PATH"
 
-echo "Restoring..."
+echo "SDK version: $(dotnet --version)"
+
+echo "Restoring NuGet packages..."
 dotnet restore
 
-echo "Publishing..."
+echo "Ensuring EF Core CLI is available as a local tool..."
+# Create (or overwrite) the tool manifest
+dotnet new tool-manifest --force
+dotnet tool install dotnet-ef --version 8.0.4
+export PATH="$PATH:$HOME/.dotnet/tools"
+dotnet tool restore
+
+echo "Applying EF Core migrations to the database..."
+dotnet ef database update --no-build --connection "$CONNECTION_STRING"
+
+echo "Publishing the project..."
 dotnet publish -c Release -o out
 
-echo "✅ Build complete!"
+echo "✅ Build script complete."
