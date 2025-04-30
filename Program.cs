@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using finalproject.Data;
 using finalproject.Models;
 using finalproject.Services;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
 using Microsoft.AspNetCore.Identity;
 using System;
 
