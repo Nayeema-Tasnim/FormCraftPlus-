@@ -15,20 +15,24 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
  
 
-var pgConn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-if (!string.IsNullOrEmpty(pgConn))
+var conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+if (!string.IsNullOrEmpty(conn))
 {
-    // Production on Render: Npgsql/Postgres
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseNpgsql(pgConn));
+    // Production: Postgres with pending‐changes warning suppressed
+    builder.Services.AddDbContext<ApplicationDbContext>(opts =>
+        opts.UseNpgsql(conn)
+            .ConfigureWarnings(w => 
+                w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 }
 else
 {
-
+    // Development: SQL Server fallback
     var sqlConn = builder.Configuration.GetConnectionString("DefaultConnection")
-                  ?? throw new InvalidOperationException("DefaultConnection missing");
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(sqlConn));
+                  ?? throw new InvalidOperationException("Missing DefaultConnection");
+    builder.Services.AddDbContext<ApplicationDbContext>(opts =>
+        opts.UseSqlServer(sqlConn)
+            .ConfigureWarnings(w => 
+                w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 }
 
 // builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
