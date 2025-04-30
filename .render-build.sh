@@ -9,15 +9,15 @@ chmod +x dotnet-install.sh
 
 export PATH="$(pwd)/dotnet:$PATH"
 
-echo "Installing dotnet-ef (v8.0.4)..."
-./dotnet/dotnet tool install --global dotnet-ef --version 8.0.4
-export PATH="$PATH:$HOME/.dotnet/tools"
-
 echo "Restoring..."
 ./dotnet/dotnet restore
 
+echo "Installing dotnet-ef locally..."
+./dotnet/dotnet new tool-manifest  # Only needed once
+./dotnet/dotnet tool install dotnet-ef --version 8.0.4
+
 echo "Updating database..."
-dotnet-ef database update
+./dotnet/dotnet tool run dotnet-ef database update
 
 echo "Publishing..."
 ./dotnet/dotnet publish -c Release -o out
