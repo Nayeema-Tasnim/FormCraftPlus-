@@ -7,10 +7,14 @@ curl -sSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh
 chmod +x dotnet-install.sh
 ./dotnet-install.sh --version 9.0.100 --install-dir ./dotnet
 
-# Add .NET to PATH
+
 export PATH="$PATH:$(pwd)/dotnet"
 
-# Log installed version
+
+echo "Installing dotnet-ef tool..."
+./dotnet/dotnet tool install --global dotnet-ef --version 9.0.0-preview.3.24172.9
+export PATH="$PATH:$HOME/.dotnet/tools"
+
 echo "Installed .NET version:"
 ./dotnet/dotnet --version
 
@@ -18,7 +22,7 @@ echo "Restoring dependencies..."
 ./dotnet/dotnet restore
 
 echo "Applying database migrations..."
-./dotnet/dotnet ef database update
+dotnet-ef database update
 
 echo "Publishing the project..."
 ./dotnet/dotnet publish -c Release -o out
