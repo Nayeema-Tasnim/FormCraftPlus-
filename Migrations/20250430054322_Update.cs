@@ -13,7 +13,7 @@ namespace finalproject.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "TagNames",
                 table: "Templates",
-                type: "nvarchar(max)",
+          
                 nullable: false,
                 defaultValue: "");
         }
