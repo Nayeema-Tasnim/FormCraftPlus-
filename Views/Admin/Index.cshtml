@@ -1,0 +1,72 @@
+@model IEnumerable<finalproject.Models.UserAdminViewModel>
+@using System
+@{
+    ViewData["Title"] = "User Management";
+}
+<h2>User Management</h2>
+
+<!--  User Content Management -->
+<div class="mb-3">
+    <a href="@Url.Action("Index", "AdminContent")" class="btn btn-primary">
+        User Content Management
+    </a>
+</div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>UserName</th>
+            <th>Lockout End</th>
+            <th>Admin</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.UserName</td>
+                <td>@(user.LockoutEnd.HasValue ? user.LockoutEnd.Value.ToString("g") : "None")</td>
+                <td>@(user.IsAdmin ? "Yes" : "No")</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Admin", new { id = user.Id })" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="@Url.Action("Delete", "Admin", new { id = user.Id })" class="btn btn-danger btn-sm">Delete</a>
+                    @if (user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTimeOffset.UtcNow)
+                    {
+                        <a href="@Url.Action("Unblock", "Admin", new { id = user.Id })" class="btn btn-secondary btn-sm">Unblock</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Block", "Admin", new { id = user.Id })" class="btn btn-info btn-sm">Block</a>
+                    }
+                    @if (user.IsAdmin)
+                    {
+                        <form asp-action="RevokeAdmin" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="btn btn-dark btn-sm">Remove Admin</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="GrantAdmin" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="btn btn-success btn-sm">Add Admin</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

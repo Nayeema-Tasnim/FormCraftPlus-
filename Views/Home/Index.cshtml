@@ -1,0 +1,125 @@
+﻿@* @using finalproject.Controllers
+@using finalproject.Data
+@model finalproject.Models.HomePageViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h2>Latest Templates</h2>
+<div class="row">
+    @foreach (var template in Model.LatestTemplates)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                @if (!string.IsNullOrEmpty(template.ImageUrl))
+                {
+                    <img src="@template.ImageUrl" alt="@template.Title" class="card-img-top" />
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@template.Title</h5>
+                    <a href="@Url.Action("Detail", "Template", new { id = template.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<h2>Popular Templates</h2>
+<div class="row">
+    @foreach (var template in Model.PopularTemplates)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                @if (!string.IsNullOrEmpty(template.ImageUrl))
+                {
+                    <img src="@template.ImageUrl" alt="@template.Title" class="card-img-top" />
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@template.Title</h5>
+                    <p>Likes: @template.LikeCount</p>
+                    <a href="@Url.Action("Detail", "Template", new { id = template.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<h2>Tag Cloud</h2>
+<div>
+    @if (Model.Tags != null && Model.Tags.Any())
+    {
+        foreach (var tag in Model.Tags)
+        {
+            <a href="@Url.Action("Index", "Search", new { query = tag.Name })" class="tag-link">
+                @tag.Name
+            </a>@Html.Raw("&nbsp;")
+        }
+    }
+    else
+    {
+        <p>No tags available.</p>
+    }
+</div>*@
+
+
+
+@model finalproject.Models.HomePageViewModel
+
+<h2>Latest Templates</h2>
+<div class="row">
+  @foreach (var t in Model.LatestTemplates)
+  {
+    <div class="col-md-4">
+      <div class="card mb-3">
+        @if (!string.IsNullOrEmpty(t.ImageUrl))
+        {
+          <img src="@t.ImageUrl" class="card-img-top" alt="@t.Title" />
+        }
+        <div class="card-body">
+          <h5 class="card-title">@t.Title</h5>
+          <a class="btn btn-primary" asp-controller="Template" asp-action="Detail" asp-route-id="@t.Id">View Details</a>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<h2>Popular Templates</h2>
+<div class="row">
+  @foreach (var p in Model.PopularTemplates)
+  {
+    <div class="col-md-4">
+      <div class="card mb-3">
+        @if (!string.IsNullOrEmpty(p.ImageUrl))
+        {
+          <img src="@p.ImageUrl" class="card-img-top" alt="@p.Title" />
+        }
+        <div class="card-body">
+          <h5 class="card-title">@p.Title</h5>
+          <p>Likes: @p.LikeCount</p>
+          <a class="btn btn-primary" asp-controller="Template" asp-action="Detail" asp-route-id="@p.Id">View Details</a>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<h2>Tag Cloud</h2>
+<div>
+
+@if (Model.Tags.Any())
+{
+    <div>
+        @foreach (var tag in Model.Tags)
+        {
+            <span class="badge bg-secondary me-1">@tag.Name</span>
+        }
+    </div>
+}
+else
+{
+    <p>No tags available.</p>
+}
+
+</div>

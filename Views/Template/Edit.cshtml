@@ -1,0 +1,96 @@
+@model finalproject.Models.Template
+@{
+    ViewData["Title"] = "Edit Template";
+}
+<h2>Edit Template</h2>
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label for="Title">Template Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="Description">Description</label>
+        <textarea class="form-control" id="Description" name="Description">@Model.Description</textarea>
+    </div>
+    
+    <div class="mb-3">
+        <label for="ImageFile">Upload Image</label>
+        <input type="file" class="form-control" id="ImageFile" name="ImageFile" />
+    </div>
+
+    <div class="mb-3">
+        <label>Access Settings</label>
+        <select class="form-select" name="IsPublic">
+            <option value="true" selected="@((Model.IsPublic ? "selected" : null))">Public</option>
+            <option value="false" selected="@((!Model.IsPublic ? "selected" : null))">Restricted</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="RestrictedToUserIds">Restricted Users (comma-separated user IDs)</label>
+        <input type="text" class="form-control" id="RestrictedToUserIds" name="RestrictedToUserIds" value="@Model.RestrictedToUserIds" />
+    </div>
+
+    <div class="mb-3">
+        <label for="TagNames">Tags (comma-separated)</label>
+        <input type="text" class="form-control" id="TagNames" name="TagNames" placeholder="e.g. Survey, Feedback" />
+    </div>
+
+    <hr />
+    
+    <h4>Questions</h4>
+    <p>Update questions below or add new ones using the button.</p>
+    <div id="questionsContainer">
+        @if(Model.Questions != null && Model.Questions.Any())
+        {
+            var qIndex = 1;
+            foreach(var question in Model.Questions)
+            {
+                <div class="mb-3">
+                    <label>Question @qIndex</label>
+                    <select name="Questions[@qIndex].QuestionType" class="form-select mb-1">
+                        <option value="Text" selected="@((question.QuestionType == finalproject.Models.QuestionTypeEnum.Text ? "selected" : null))">Text</option>
+                        <option value="Number" selected="@((question.QuestionType == finalproject.Models.QuestionTypeEnum.Number ? "selected" : null))">Number</option>
+                        <option value="Checkbox" selected="@((question.QuestionType == finalproject.Models.QuestionTypeEnum.Checkbox ? "selected" : null))">Checkbox</option>
+                        <option value="Select" selected="@((question.QuestionType == finalproject.Models.QuestionTypeEnum.Select ? "selected" : null))">Select</option>
+                    </select>
+                    <input type="text" class="form-control" name="Questions[@qIndex].QuestionText" value="@question.QuestionText" placeholder="Enter question text" required />
+                </div>
+                qIndex++;
+            }
+        }
+    </div>
+    <button type="button" id="addQuestionBtn" class="btn btn-secondary">Add Question</button>
+
+    <hr />
+    <button type="submit" class="btn btn-primary">Update Template</button>
+</form>
+
+@section Scripts {
+    <script>
+        var questionCount = @(Model.Questions?.Count() ?? 0);
+        document.getElementById("addQuestionBtn").addEventListener("click", function () {
+            questionCount++;
+            var questionDiv = document.createElement("div");
+            questionDiv.classList.add("mb-3");
+            questionDiv.innerHTML = `
+                <label for="Questions_${questionCount}">Question ${questionCount}</label>
+                <select name="Questions[${questionCount}].QuestionType" class="form-select mb-1">
+                    <option value="Text">Text</option>
+                    <option value="Number">Number</option>
+                    <option value="Checkbox">Checkbox</option>
+                    <option value="Select">Select</option>
+                </select>
+                <input type="text" class="form-control" name="Questions[${questionCount}].QuestionText" id="Questions_${questionCount}" placeholder="Enter question text" required />
+            `;
+            document.getElementById("questionsContainer").appendChild(questionDiv);
+        });
+    </script>
+} 
+
+
+ 

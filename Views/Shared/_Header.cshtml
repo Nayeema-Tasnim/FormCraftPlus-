@@ -1,0 +1,14 @@
+ @* <li class="nav-item">
+    
+        <form method="post"
+              asp-controller="Template" asp-action="QuickCreate"
+              class="d-flex align-items-center">
+            @Html.AntiForgeryToken()
+            <input type="text" name="title"
+                   placeholder="Template Title"
+                   class="form-control me-2" />
+            <button type="submit" class="btn btn-success">
+                Create Template
+            </button>
+      </form>
+    </li> *@

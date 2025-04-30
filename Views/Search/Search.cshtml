@@ -1,0 +1,39 @@
+@model IEnumerable<finalproject.Models.Template>
+@{
+    ViewData["Title"] = "Search Results";
+    var searchTerm = ViewData["SearchQuery"] as string ?? "";
+}
+
+<h2>Search Results for “@searchTerm”</h2>
+
+@if (!Model.Any())
+{
+    <p>No templates found matching “@searchTerm”.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var template in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    @if (!string.IsNullOrEmpty(template.ImageUrl))
+                    {
+                        <img src="@template.ImageUrl"
+                             class="card-img-top"
+                             alt="@template.Title" />
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@template.Title</h5>
+                        <a asp-controller="Template"
+                           asp-action="Detail"
+                           asp-route-id="@template.Id"
+                           class="btn btn-primary">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

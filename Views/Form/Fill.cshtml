@@ -1,0 +1,55 @@
+@model finalproject.Models.FilledForm
+@{
+    ViewData["Title"] = "Fill Form";
+    var template = ViewBag.Template as finalproject.Models.Template;
+}
+@if (template == null)
+{
+    <p>Template information is missing.</p>
+}
+else
+{
+    <h2>Fill Form for Template: @template.Title</h2>
+    <form asp-action="Fill" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="templateId" value="@template.Id" />
+
+        @if (template.Questions != null && template.Questions.Any())
+        {
+            foreach (var question in template.Questions)
+            {
+                <div class="mb-3">
+                    <label for="Answer_@question.Id">@question.QuestionText</label>
+                    @switch(question.QuestionType.ToString())
+                    {
+                        case "Text":
+                            <input type="text" class="form-control" id="Answer_@question.Id" name="answers[Answer_@question.Id]" required />
+                            break;
+                        case "Number":
+                            <input type="number" class="form-control" id="Answer_@question.Id" name="answers[Answer_@question.Id]" required />
+                            break;
+                        case "Checkbox":
+                            <input type="checkbox" class="form-check-input" id="Answer_@question.Id" name="answers[Answer_@question.Id]" />
+                            break;
+                        case "Select":
+                            <select id="Answer_@question.Id" name="answers[Answer_@question.Id]" class="form-select" required>
+                                <option value="">Select...</option>
+                                <option value="Option1">Option1</option>
+                                <option value="Option2">Option2</option>
+                            </select>
+                            break;
+                        default:
+                            <input type="text" class="form-control" id="Answer_@question.Id" name="answers[Answer_@question.Id]" required />
+                            break;
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <p>No questions available for this template.</p>
+        }
+
+        <button type="submit" class="btn btn-primary">Submit Form</button>
+    </form>
+}

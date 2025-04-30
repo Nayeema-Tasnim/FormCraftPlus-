@@ -1,0 +1,78 @@
+@model finalproject.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "My Dashboard";
+}
+<h2>My Dashboard</h2>
+
+<!-- Conditionally display the admin user management button -->
+@if (User.IsInRole("Admin"))
+{
+    <div class="mb-4">
+        <a href="@Url.Action("Index", "Admin")" class="btn btn-danger">Manage Users</a>
+    </div>
+}
+
+<div class="mb-4">
+    <h3>My Templates</h3>
+    @if (Model.MyTemplates != null && Model.MyTemplates.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var template in Model.MyTemplates.Where(t => t != null))
+                {
+                    <tr>
+                        <td>@(template?.Title ?? "N/A")</td>
+                        <td>@(template?.CreatedAt.ToString("g") ?? "N/A")</td>
+                        <td>
+                            <a href="@Url.Action("Detail", "Template", new { id = template?.Id ?? 0 })" class="btn btn-primary btn-sm">View</a>
+                            <a href="@Url.Action("Edit", "Template", new { id = template?.Id ?? 0 })" class="btn btn-warning btn-sm">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>You have not created any templates yet.</p>
+    }
+</div>
+
+<div>
+    <h3>My Filled Forms</h3>
+    @if (Model.MyFilledForms != null && Model.MyFilledForms.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Template Title</th>
+                    <th>Submitted At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var form in Model.MyFilledForms.Where(f => f != null))
+                {
+                    <tr>
+                        <td>@(form?.Template?.Title ?? "N/A")</td>
+                        <td>@(form?.SubmittedAt.ToString("g") ?? "N/A")</td>
+                        <td>
+                            <a href="@Url.Action("Detail", "Form", new { id = form?.Id ?? 0 })" class="btn btn-primary btn-sm">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>You have not submitted any responses yet.</p>
+    }
+</div>

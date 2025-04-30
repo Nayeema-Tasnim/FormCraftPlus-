@@ -1,0 +1,82 @@
+@model finalproject.Models.Template
+@{
+    ViewData["Title"] = "Template Details";
+}
+<h2>@Model.Title</h2>
+<p><strong>Description:</strong> @Model.Description</p>
+@if (!string.IsNullOrEmpty(Model.ImageUrl))
+{
+    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid" />
+}
+<p>
+    <strong>Public:</strong> @(Model.IsPublic ? "Yes" : "Restricted")<br />
+    <strong>Created At:</strong> @Model.CreatedAt.ToString("g")<br />
+    <strong>Created By:</strong> @Model.CreatedById
+</p>
+<hr />
+
+<h3>Tags</h3>
+@if (Model.Tags.Any())
+{
+    <div>
+        @foreach (var tag in Model.Tags)
+        {
+            <span class="badge bg-secondary me-1">@tag.Name</span>
+        }
+    </div>
+}
+else
+{
+    <p>No tags available.</p>
+}
+
+<hr />
+
+<h3>Questions</h3>
+@if (Model.Questions.Any())
+{
+    <ul class="list-group">
+        @foreach (var question in Model.Questions)
+        {
+            <li class="list-group-item">
+                <strong>@question.QuestionText</strong> (Type: @question.QuestionType)
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No questions available.</p>
+}
+
+<hr />
+
+<h3>Comments</h3>
+@if (Model.Comments.Any())
+{
+    <ul class="list-group mb-3">
+        @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+        {
+            <li class="list-group-item">
+                <strong>@comment.UserId</strong> (@comment.CreatedAt.ToString("g")):
+                @comment.Content
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No comments yet. Be the first to comment!</p>
+}
+
+<h4>Add a Comment</h4>
+<form asp-action="AddComment" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="templateId" value="@Model.Id" />
+    <div class="mb-3">
+        <textarea name="commentContent" class="form-control" placeholder="Write your comment here..." required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Comment</button>
+</form>
+<a href="@Url.Action("Edit", "AdminContent", new { id = Model.Id })" class="btn btn-warning">Edit Template</a>
+<a href="@Url.Action("Delete", "AdminContent", new { id = Model.Id })" class="btn btn-danger">Delete Template</a>

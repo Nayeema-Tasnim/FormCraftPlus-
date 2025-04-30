@@ -1,0 +1,15 @@
+/* Basic Light/Dark Theme */
+body[data-theme="dark"] {
+  background-color: #121212;
+  color: #ffffff;
+}
+body[data-theme="light"] {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Additional styling */
+.footer {
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}

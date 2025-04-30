@@ -1,0 +1,53 @@
+@model finalproject.Models.Template
+@{
+    ViewData["Title"] = "Edit Template";
+}
+<h2>Edit Template</h2>
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" required />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label for="ImageFile">Upload New Image</label>
+        <input type="file" class="form-control" id="ImageFile" name="ImageFile" />
+    </div>
+    
+    <div class="mb-3">
+        <label>Access Settings</label>
+        <select class="form-select" name="IsPublic">
+            @if(Model.IsPublic)
+            {
+                <option value="true" selected>Public</option>
+                <option value="false">Restricted</option>
+            }
+            else
+            {
+                <option value="true">Public</option>
+                <option value="false" selected>Restricted</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="RestrictedToUserIds">Restricted Users (comma-separated IDs)</label>
+        <input type="text" class="form-control" id="RestrictedToUserIds" name="RestrictedToUserIds" value="@Model.RestrictedToUserIds" />
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Update Template</button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

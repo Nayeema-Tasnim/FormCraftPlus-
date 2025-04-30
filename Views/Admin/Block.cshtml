@@ -1,0 +1,12 @@
+@model finalproject.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Block User";
+}
+<h2>Block User</h2>
+<p>Are you sure you want to block the user <strong>@Model.Email</strong>?</p>
+<form asp-action="Block" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-warning">Block User</button>
+    <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary">Cancel</a>
+</form>

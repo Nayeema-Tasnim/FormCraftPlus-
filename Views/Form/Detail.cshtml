@@ -1,0 +1,40 @@
+@model finalproject.Models.FilledForm
+@{
+    ViewData["Title"] = "Filled Form Details";
+}
+
+@if (Model.Template == null)
+{
+    <p>Template information is missing.</p>
+}
+else
+{
+    <h2>Filled Form Details for Template: @Model.Template.Title</h2>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Question ID</th>
+                <th>Response</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Answers != null && Model.Answers.Any())
+            {
+                foreach (var answer in Model.Answers)
+                {
+                    <tr>
+                        <td>@answer.QuestionId</td>
+                        <td>@answer.Response</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2">No answers have been submitted.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

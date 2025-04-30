@@ -1,0 +1,43 @@
+@model IEnumerable<finalproject.Models.Template>
+@{
+    ViewData["Title"] = "Search Results";
+    var searchQuery = ViewBag.SearchQuery as string;
+}
+
+<h2>Search Results for "@searchQuery"</h2>
+
+@if (!Model.Any())
+{
+    <p>No templates found matching your query.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var template in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Detail" asp-route-id="@template.Id">@template.Title</a>
+                    </td>
+                    <td>@template.CreatedAt.ToString("g")</td>
+                    <td>
+                        @* @if (User.Identity.IsAuthenticated && *@
+                             template.CreatedById == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                        {
+                            <a asp-action="Edit" asp-route-id="@template.Id" class="btn btn-warning btn-sm">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@template.Id" class="btn btn-danger btn-sm">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
