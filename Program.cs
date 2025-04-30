@@ -12,7 +12,7 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+
 
 
 
@@ -25,8 +25,12 @@ builder.Services.AddSignalR();
 
  
 
- builder.Services.AddDbContext<ApplicationDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!));
+ var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                      ?? Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 
