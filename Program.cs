@@ -1,5 +1,4 @@
 
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,21 +12,24 @@ using System;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-
-
-
-builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
  
- 
- 
 
+var pgConn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+if (!string.IsNullOrEmpty(pgConn))
+{
+    // Production on Render: Npgsql/Postgres
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(pgConn));
+}
+else
+{
 
- 
-
- builder.Services.AddDbContext<ApplicationDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!));
-
+    var sqlConn = builder.Configuration.GetConnectionString("DefaultConnection")
+                  ?? throw new InvalidOperationException("DefaultConnection missing");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(sqlConn));
+}
 
 // builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
@@ -44,12 +46,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddDefaultTokenProviders();
 
 
-
-
-
-
-
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -58,13 +54,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 
-
-
 builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
-
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Urls.Clear();
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 
 
