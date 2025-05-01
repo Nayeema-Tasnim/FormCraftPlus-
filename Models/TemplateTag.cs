@@ -6,6 +6,6 @@ namespace finalproject.Models
         public virtual Template Template { get; set; } =default!;
         
         public int TagId { get; set; }
-        public virtual Tag Tag { get; set; } = default!;
+      public List<TemplateTag> TemplateTags { get; set; } = new List<TemplateTag>();
     }
 }

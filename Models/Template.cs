@@ -1,4 +1,7 @@
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace finalproject.Models
 {
@@ -17,8 +20,9 @@ namespace finalproject.Models
 
         public string CreatedById { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-public string TagNames { get; set; } = string.Empty;
 
+[NotMapped]
+public string TagNames { get; set; } = string.Empty;
         // Navigation properties.
         public List<Question> Questions { get; set; } = new List<Question>();
         public List<Tag> Tags { get; set; } = new List<Tag>();

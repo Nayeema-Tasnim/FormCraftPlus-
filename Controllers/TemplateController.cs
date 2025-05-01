@@ -53,7 +53,7 @@ namespace finalproject.Controllers
             model.CreatedAt = DateTime.UtcNow;
             model.CreatedById = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
 
-            // Add the template record.
+           
             _context.Templates.Add(model);
             await _context.SaveChangesAsync();
 
