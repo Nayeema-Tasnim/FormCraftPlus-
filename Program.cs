@@ -12,7 +12,7 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add MVC and SignalR
+// MVC and SignalR
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 
@@ -60,12 +60,12 @@ builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
-// Bind to Render’s port or default 5000
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 app.Urls.Clear();
 app.Urls.Add($"http://0.0.0.0:{port}");
 
-// Apply migrations and seed in a single scope
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

@@ -122,6 +122,8 @@ namespace finalproject.Controllers
 
 
         [HttpGet]
+          [AllowAnonymous]
+   
         public async Task<IActionResult> Detail(int id)
         {
             var template = await _context.Templates
