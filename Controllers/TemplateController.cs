@@ -24,7 +24,21 @@ namespace finalproject.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create() => View();
+
+public IActionResult Create(int? id)
+{
+    if (id.HasValue)
+    {
+        var template = _context.Templates.Find(id.Value);
+        if (template == null)
+            return NotFound();
+
+        // Optionally pass the loaded template to the view
+        return View(template);
+    }
+    return View();
+}
+
 
         [HttpPost]
          [ValidateAntiForgeryToken]
