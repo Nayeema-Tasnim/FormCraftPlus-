@@ -16,8 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 
-// Configure DbContext for Render (Postgres) or Local (SQL Server)
-var conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
+var conn = Environment.GetEnvironmentVariable("DATABASE_URL");
 if (!string.IsNullOrEmpty(conn))
 {
     builder.Services.AddDbContext<ApplicationDbContext>(opts =>
@@ -27,6 +27,7 @@ if (!string.IsNullOrEmpty(conn))
 }
 else
 {
+  
     var sqlConn = builder.Configuration.GetConnectionString("DefaultConnection")
                   ?? throw new InvalidOperationException("Missing DefaultConnection");
     builder.Services.AddDbContext<ApplicationDbContext>(opts =>
@@ -35,7 +36,7 @@ else
                 w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 }
 
-// Configure Identity
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 4;
@@ -47,7 +48,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// Configure cookie
+// Configure authentication cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -60,11 +61,10 @@ builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
-
+// Configure Render port binding
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 app.Urls.Clear();
 app.Urls.Add($"http://0.0.0.0:{port}");
-
 
 using (var scope = app.Services.CreateScope())
 {
