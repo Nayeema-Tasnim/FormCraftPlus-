@@ -1,6 +1,5 @@
 
-//             // Fetch Tags
-//             homepageViewModel.Tags = await _context.Tags.OrderBy(t => t.Name).ToListAsync();
+
 
 
 
@@ -36,7 +35,7 @@ namespace finalproject.Controllers
                                                  .Take(10)
                                                  .ToListAsync(),
 
-               // Fetch Tags
+              
                Tags = await _context.Tags.OrderBy(t => t.Name).ToListAsync()
                
 
