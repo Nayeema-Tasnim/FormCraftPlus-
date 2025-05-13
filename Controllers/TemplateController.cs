@@ -33,7 +33,6 @@ public IActionResult Create(int? id)
         if (template == null)
             return NotFound();
 
-        // Optionally pass the loaded template to the view
         return View(template);
     }
     return View();
@@ -63,7 +62,6 @@ public IActionResult Create(int? id)
                 model.ImageUrl = "/uploads/" + fileName;
             }
 
-            // Set metadata.
             model.CreatedAt = DateTime.UtcNow;
             model.CreatedById = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
 
