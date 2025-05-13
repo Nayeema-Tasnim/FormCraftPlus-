@@ -23,7 +23,7 @@ namespace finalproject.Models
 
 [NotMapped]
 public string TagNames { get; set; } = string.Empty;
-        // Navigation properties.
+  
         public List<Question> Questions { get; set; } = new List<Question>();
         public List<Tag> Tags { get; set; } = new List<Tag>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
