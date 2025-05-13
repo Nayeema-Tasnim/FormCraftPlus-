@@ -12,7 +12,7 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MVC and SignalR
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 
@@ -48,7 +48,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// Configure authentication cookie
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -56,12 +56,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 });
 
-// Cloudinary service
+
 builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
-// Configure Render port binding
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 app.Urls.Clear();
 app.Urls.Add($"http://0.0.0.0:{port}");
@@ -81,7 +81,7 @@ using (var scope = app.Services.CreateScope())
     logger.LogInformation("Database migration and seeding complete.");
 }
 
-// Middleware pipeline
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
