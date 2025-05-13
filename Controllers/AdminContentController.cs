@@ -18,7 +18,7 @@ namespace finalproject.Controllers
             _context = context;
         }
 
-        // GET: /AdminContent/Index
+     
       
         public async Task<IActionResult> Index()
         {
@@ -28,7 +28,7 @@ namespace finalproject.Controllers
             return View(templates);
         }
 
-        // GET: /AdminContent/Detail/{id}
+      
         
         public async Task<IActionResult> Detail(int id)
         {
@@ -45,7 +45,7 @@ namespace finalproject.Controllers
             return View(template);
         }
 
-        // GET: /AdminContent/Edit/{id}
+      
      
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -59,7 +59,7 @@ namespace finalproject.Controllers
             return View(template);
         }
 
-        // POST: /AdminContent/Edit
+   
        
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -103,7 +103,7 @@ namespace finalproject.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        // GET: /AdminContent/Delete/{id}
+        
         
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -114,7 +114,7 @@ namespace finalproject.Controllers
             return View(template);
         }
 
-        // POST: /AdminContent/Delete/{id}
+       
         
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
