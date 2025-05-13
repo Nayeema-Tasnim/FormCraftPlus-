@@ -22,16 +22,16 @@ public async Task<IActionResult> Detail(int id)
 {
     var filledForm = await _context.FilledForms
         .Include(f => f.Answers)
-        .Include(f => f.Template) // Ensure Template is loaded for CreatedById check.
+        .Include(f => f.Template) 
         .FirstOrDefaultAsync(f => f.Id == id);
 
     if (filledForm == null)
         return NotFound();
 
-    // Retrieve the current user's ID.
+   
     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
 
-    // Ensure that only Admins, the Template's creator, or the user who filled out the form have access.
+
     if (!User.IsInRole("Admin")
         && filledForm.Template.CreatedById != userId
         && filledForm.FilledById != userId)
@@ -46,14 +46,14 @@ public async Task<IActionResult> Detail(int id)
         [HttpGet]
 public async Task<IActionResult> Fill(int templateId)
 {
-    // Load the template and include its questions.
+  
     var template = await _context.Templates
         .Include(t => t.Questions)
         .FirstOrDefaultAsync(t => t.Id == templateId);
     if (template == null)
         return NotFound();
 
-    // Set the template in the ViewBag so the view can access it.
+  
     ViewBag.Template = template;
     return View();
 }
