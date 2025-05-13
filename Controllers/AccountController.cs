@@ -19,7 +19,7 @@ namespace finalproject.Controllers
             _signInManager = signInManager;
         }
     
-        // GET: /Account/Register
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -29,8 +29,7 @@ namespace finalproject.Controllers
 
 
         
-    
-        // POST: /Account/Register
+   
         [HttpPost]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Register(RegisterViewModel model)
@@ -79,7 +78,7 @@ public async Task<IActionResult> Register(RegisterViewModel model)
 
 
 
-    // GET: /Account/Login
+
 [HttpGet]
 public IActionResult Login(string? returnUrl = null)
 {
@@ -140,7 +139,7 @@ public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl =
 
 
     
-        // POST: /Account/Logout
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -149,7 +148,7 @@ public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl =
             return RedirectToAction("Index", "Home");
         }
     
-        // GET: /Account/AccessDenied
+
         [HttpGet]
         public IActionResult AccessDenied()
         {
