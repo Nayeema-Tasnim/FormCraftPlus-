@@ -41,7 +41,7 @@ namespace finalproject.Controllers
             return View(model);
         }
 
-        // GET: /Admin/Edit/{id}
+        
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -64,7 +64,7 @@ namespace finalproject.Controllers
             return View(model);
         }
 
-        // POST: /Admin/Edit
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditUserViewModel model)
@@ -105,7 +105,7 @@ namespace finalproject.Controllers
             return RedirectToAction("Index", "Dashboard");
         }
 
-        // GET: /Admin/Delete/{id}
+       
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -118,7 +118,7 @@ namespace finalproject.Controllers
             return View(user);
         }
 
-        // POST: /Admin/DeleteConfirmed
+   
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -133,7 +133,7 @@ namespace finalproject.Controllers
             return RedirectToAction("Index", "Dashboard");
         }
 
-        // GET: /Admin/Block/{id}
+
         public async Task<IActionResult> Block(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -146,7 +146,6 @@ namespace finalproject.Controllers
             return View(user);
         }
 
-        // POST: /Admin/BlockConfirmed
         [HttpPost, ActionName("Block")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> BlockConfirmed(string id)
@@ -177,7 +176,7 @@ namespace finalproject.Controllers
             return View(user);
         }
 
-        // POST: /Admin/UnblockConfirmed
+       
         [HttpPost, ActionName("Unblock")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UnblockConfirmed(string id)
@@ -194,7 +193,7 @@ namespace finalproject.Controllers
             return RedirectToAction("Index", "Dashboard");
         }
 
-        // POST: /Admin/GrantAdmin
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GrantAdmin(string id)
@@ -215,7 +214,7 @@ namespace finalproject.Controllers
             return RedirectToAction("Index", "Dashboard");
         }
 
-        // POST: /Admin/RevokeAdmin
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RevokeAdmin(string id)
